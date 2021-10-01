@@ -2,8 +2,8 @@
     "config": {
         "step": {
             "user": {
-                "title": "Blueprint",
-                "description": "If you need help with the configuration have a look here: https://github.com/custom-components/TpLink_Cloud",
+                "title": "TpLink Cloud",
+                "description": "If you need help with the configuration have a look here: https://github.com/njobrien1006/tplink_cloud",
                 "data": {
                     "username": "Username",
                     "password": "Password"
@@ -21,8 +21,6 @@
         "step": {
             "user": {
                 "data": {
-                    "binary_sensor": "Binary sensor enabled",
-                    "sensor": "Sensor enabled",
                     "switch": "Switch enabled"
                 }
             }

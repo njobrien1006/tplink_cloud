@@ -5,7 +5,7 @@ DOMAIN = "TpLink_Cloud"
 DOMAIN_DATA = f"{DOMAIN}_data"
 VERSION = "0.0.1"
 ATTRIBUTION = "Data provided by http://jsonplaceholder.typicode.com/"
-ISSUE_URL = "https://github.com/custom-components/TpLink_Cloud/issues"
+ISSUE_URL = "https://github.com/njobrien1006/tplink_cloud/issues"
 
 # Icons
 ICON = "mdi:format-quote-close"

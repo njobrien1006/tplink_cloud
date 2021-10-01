@@ -1,12 +1,12 @@
 {
   "domain": "TpLink_Cloud",
-  "name": "Integration blueprint",
-  "documentation": "https://github.com/custom-components/TpLink_Cloud",
+  "name": "TpLink_Cloud",
+  "documentation": "https://github.com/njobrien1006/tplink_cloud",
   "iot_class": "cloud_polling",
-  "issue_tracker": "https://github.com/custom-components/TpLink_Cloud/issues",
-  "version": "0.0.0",
+  "issue_tracker": "https://github.com/njobrien1006/tplink_cloud/issues",
+  "version": "0.0.1",
   "config_flow": true,
   "codeowners": [
-    "@ludeeus"
+    "@njobrien1006"
   ]
 }
