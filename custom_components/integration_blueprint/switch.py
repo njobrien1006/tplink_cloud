@@ -1,8 +1,8 @@
-"""Switch platform for integration_blueprint."""
+"""Switch platform for TpLink_Cloud."""
 from homeassistant.components.switch import SwitchEntity
 
 from .const import DEFAULT_NAME, DOMAIN, ICON, SWITCH
-from .entity import IntegrationBlueprintEntity
+from .entity import TpLink_Cloud
 
 
 async def async_setup_entry(hass, entry, async_add_devices):
@@ -11,8 +11,8 @@ async def async_setup_entry(hass, entry, async_add_devices):
     async_add_devices([IntegrationBlueprintBinarySwitch(coordinator, entry)])
 
 
-class IntegrationBlueprintBinarySwitch(IntegrationBlueprintEntity, SwitchEntity):
-    """integration_blueprint switch class."""
+class IntegrationBlueprintBinarySwitch(TpLink_Cloud, SwitchEntity):
+    """TpLink_Cloud switch class."""
 
     async def async_turn_on(self, **kwargs):  # pylint: disable=unused-argument
         """Turn on the switch."""

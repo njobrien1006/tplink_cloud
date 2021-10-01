@@ -1,4 +1,4 @@
-"""Binary sensor platform for integration_blueprint."""
+"""Binary sensor platform for TpLink_Cloud."""
 from homeassistant.components.binary_sensor import BinarySensorEntity
 
 from .const import (
@@ -7,7 +7,7 @@ from .const import (
     DEFAULT_NAME,
     DOMAIN,
 )
-from .entity import IntegrationBlueprintEntity
+from .entity import TpLink_Cloud
 
 
 async def async_setup_entry(hass, entry, async_add_devices):
@@ -16,8 +16,8 @@ async def async_setup_entry(hass, entry, async_add_devices):
     async_add_devices([IntegrationBlueprintBinarySensor(coordinator, entry)])
 
 
-class IntegrationBlueprintBinarySensor(IntegrationBlueprintEntity, BinarySensorEntity):
-    """integration_blueprint binary_sensor class."""
+class IntegrationBlueprintBinarySensor(TpLink_Cloud, BinarySensorEntity):
+    """TpLink_Cloud binary_sensor class."""
 
     @property
     def name(self):

@@ -1,11 +1,11 @@
-"""Constants for integration_blueprint."""
+"""Constants for TpLink_Cloud."""
 # Base component constants
 NAME = "Integration blueprint"
-DOMAIN = "integration_blueprint"
+DOMAIN = "TpLink_Cloud"
 DOMAIN_DATA = f"{DOMAIN}_data"
 VERSION = "0.0.1"
 ATTRIBUTION = "Data provided by http://jsonplaceholder.typicode.com/"
-ISSUE_URL = "https://github.com/custom-components/integration_blueprint/issues"
+ISSUE_URL = "https://github.com/custom-components/TpLink_Cloud/issues"
 
 # Icons
 ICON = "mdi:format-quote-close"

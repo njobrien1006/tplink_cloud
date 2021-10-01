@@ -1,6 +1,6 @@
-"""Sensor platform for integration_blueprint."""
+"""Sensor platform for TpLink_Cloud."""
 from .const import DEFAULT_NAME, DOMAIN, ICON, SENSOR
-from .entity import IntegrationBlueprintEntity
+from .entity import TpLink_Cloud
 
 
 async def async_setup_entry(hass, entry, async_add_devices):
@@ -9,8 +9,8 @@ async def async_setup_entry(hass, entry, async_add_devices):
     async_add_devices([IntegrationBlueprintSensor(coordinator, entry)])
 
 
-class IntegrationBlueprintSensor(IntegrationBlueprintEntity):
-    """integration_blueprint Sensor class."""
+class IntegrationBlueprintSensor(TpLink_Cloud):
+    """TpLink_Cloud Sensor class."""
 
     @property
     def name(self):
