@@ -1,10 +1,10 @@
 """Constants for TpLink_Cloud."""
 # Base component constants
-NAME = "Integration blueprint"
+NAME = "Tp-Link Kasa Cloud"
 DOMAIN = "TpLink_Cloud"
 DOMAIN_DATA = f"{DOMAIN}_data"
 VERSION = "0.0.1"
-ATTRIBUTION = "Data provided by http://jsonplaceholder.typicode.com/"
+ATTRIBUTION = "Data provided byhttps://use1-wap.tplinkcloud.com"
 ISSUE_URL = "https://github.com/njobrien1006/tplink_cloud/issues"
 
 # Icons
@@ -14,10 +14,10 @@ ICON = "mdi:format-quote-close"
 BINARY_SENSOR_DEVICE_CLASS = "connectivity"
 
 # Platforms
-BINARY_SENSOR = "binary_sensor"
-SENSOR = "sensor"
+#BINARY_SENSOR = "binary_sensor"
+#SENSOR = "sensor"
 SWITCH = "switch"
-PLATFORMS = [BINARY_SENSOR, SENSOR, SWITCH]
+PLATFORMS = [SWITCH]
 
 
 # Configuration and options
