@@ -11,7 +11,7 @@ Integration to communicate and change the state of Kasa Cloud Devices. Mostly in
 [![Discord][discord-shield]][discord]
 [![Community Forum][forum-shield]][forum]
 
-_Component to integrate with [integration_blueprint][integration_blueprint]._
+_Component to integrate with [integration_api][Tp-Link Kasa]._
 
 **This component will set up the following platforms.**
 
@@ -55,6 +55,7 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 ***
 
 [integration_blueprint]: https://github.com/njobrien1006/tplink_cloud
+[integration_api]: https://www.kasasmart.com/
 [commits-shield]: https://img.shields.io/github/commit-activity/y/custom-components/blueprint.svg?style=for-the-badge
 [commits]: https://github.com/njobrien1006/tplink_cloud/commit/master
 [hacs]: https://github.com/custom-components/hacs
