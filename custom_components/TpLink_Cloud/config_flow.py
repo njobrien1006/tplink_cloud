@@ -72,6 +72,7 @@ class BlueprintFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
     async def _test_credentials(self, username, password):
         """Return true if credentials is valid."""
         try:
+            return True  #Delete me
             session = async_create_clientsession(self.hass)
             client = IntegrationBlueprintApiClient(username, password, session)
             await client.async_get_data()
