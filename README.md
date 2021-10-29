@@ -54,9 +54,9 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 
 ***
 
-[integration_blueprint]: https://github.com/custom-components/integration_blueprint
+[integration_blueprint]: https://github.com/njobrien1006/tplink_cloud
 [commits-shield]: https://img.shields.io/github/commit-activity/y/custom-components/blueprint.svg?style=for-the-badge
-[commits]: https://github.com/custom-components/integration_blueprint/commits/master
+[commits]: https://github.com/njobrien1006/tplink_cloud/commit/master
 [hacs]: https://github.com/custom-components/hacs
 [hacsbadge]: https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge
 [discord]: https://discord.gg/Qa5fW2R
@@ -66,4 +66,4 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 [forum]: https://community.home-assistant.io/
 [license-shield]: https://img.shields.io/github/license/custom-components/blueprint.svg?style=for-the-badge
 [releases-shield]: https://img.shields.io/github/release/custom-components/blueprint.svg?style=for-the-badge
-[releases]: https://github.com/custom-components/integration_blueprint/releases
+[releases]: https://github.com/njobrien1006/tplink_cloud/releases
