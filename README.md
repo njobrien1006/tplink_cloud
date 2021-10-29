@@ -7,7 +7,6 @@ Integration to communicate and change the state of Kasa Cloud Devices. Mostly in
 [![License][license-shield]](LICENSE)
 
 [![hacs][hacsbadge]][hacs]
-![Project Maintenance][maintenance-shield]
 
 [![Discord][discord-shield]][discord]
 [![Community Forum][forum-shield]][forum]
@@ -66,6 +65,5 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 [forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge
 [forum]: https://community.home-assistant.io/
 [license-shield]: https://img.shields.io/github/license/custom-components/blueprint.svg?style=for-the-badge
-[maintenance-shield]: https://img.shields.io/badge/maintainer-Joakim%20Sørensen%20%40ludeeus-blue.svg?style=for-the-badge
 [releases-shield]: https://img.shields.io/github/release/custom-components/blueprint.svg?style=for-the-badge
 [releases]: https://github.com/custom-components/integration_blueprint/releases
