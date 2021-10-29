@@ -55,7 +55,7 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 ***
 
 [integration_blueprint]: https://github.com/njobrien1006/tplink_cloud
-[integration_api]: https://www.kasasmart.com/
+[integration_api]: https://www.kasasmart.com
 [commits-shield]: https://img.shields.io/github/commit-activity/y/custom-components/blueprint.svg?style=for-the-badge
 [commits]: https://github.com/njobrien1006/tplink_cloud/commit/master
 [hacs]: https://github.com/custom-components/hacs
