@@ -1,25 +1,23 @@
 """BlueprintEntity class"""
-from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from homeassistant.helpers.entity import Entity
 
 from .const import DOMAIN, NAME, VERSION, ATTRIBUTION
 
-
-class TpLink_Cloud(CoordinatorEntity):
-    def __init__(self, coordinator, config_entry):
-        super().__init__(coordinator)
-        self.config_entry = config_entry
+class TpLink_CloudEntity(Entity):
 
     @property
     def unique_id(self):
         """Return a unique ID to use for this entity."""
-        return self.config_entry.entry_id
+        return self.device
 
     @property
     def device_info(self):
+        mydevice = self.client.sync_rtn_device(self.device)
         return {
-            "identifiers": {(DOMAIN, self.unique_id)},
-            "name": NAME,
-            "model": VERSION,
+            "identifiers": {(DOMAIN, self.device)},
+            "name": mydevice["alias"],
+            "model": mydevice["deviceModel"],
+            "sw_version": mydevice["fwVer"],
             "manufacturer": NAME,
         }
 
@@ -28,6 +26,5 @@ class TpLink_Cloud(CoordinatorEntity):
         """Return the state attributes."""
         return {
             "attribution": ATTRIBUTION,
-            "id": str(self.coordinator.data.get("id")),
             "integration": DOMAIN,
         }
