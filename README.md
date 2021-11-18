@@ -1,6 +1,6 @@
-# TP-Link Kasa Clound Integration
+# HomeAssistant Carrier Infinity
 
-Integration to communicate and change the state of Kasa Cloud Devices. Mostly intended for use with Outlet Plugs as we are using assumed state in conjunction with periodic Cloud Polling. Explicitly not intended to poll Kasa's Cloud for LightSwitch changes. 
+HomeAssistant plugin for Carrier Infinity / Bryant Evolution / ICP Brands Ion thermostats.
 
 [![GitHub Release][releases-shield]][releases]
 [![GitHub Activity][commits-shield]][commits]
@@ -8,18 +8,14 @@ Integration to communicate and change the state of Kasa Cloud Devices. Mostly in
 
 [![hacs][hacsbadge]][hacs]
 
-[![Discord][discord-shield]][discord]
-[![Community Forum][forum-shield]][forum]
-
 _Component to integrate with [integration_api][Tp-Link Kasa]._
 
-**This component will set up the following platforms.**
+# Supported Systems
 
-Platform | Description
--- | --
-`switch` | Switch For Plugs `True` or `False`.
-
-![Device1][Device1img]
+This is a standalone plugin for Homebridge that talks directly to the Infinity/Evolution/Ion api. It should support these similar systems:
+* [Carrier Infinity](https://www.myinfinitytouch.carrier.com/Account/Register)</a>
+* [Bryant Evolution](https://www.myevolutionconnex.bryant.com/Account/Register)</a>
+* [ICP Brands Ion](https://www.ioncomfort.com/Account/Register) (including Airquest, Arcoaire, Comfortmaker, Day&Night, Heil, Keeprite, Tempstar)
 
 ## Installation
 
@@ -33,16 +29,10 @@ Platform | Description
 
 Using your HA configuration directory (folder) as a starting point you should now also have this:
 
-```text
-custom_components/integration_blueprint/translations/en.json
-custom_components/integration_blueprint/__init__.py
-custom_components/integration_blueprint/tplinkcloud.py
-custom_components/integration_blueprint/binary_sensor.py
-custom_components/integration_blueprint/config_flow.py
-custom_components/integration_blueprint/const.py
-custom_components/integration_blueprint/manifest.json
-custom_components/integration_blueprint/switch.py
-```
+# Notes
+
+* It may take 1-2 minutes from the time you make a change via HomeKit until your thermostat sees the change. This is an unavoidable result of how the thermostats poll for updates.
+* This plugin *does not* require Infinitude/Infinitive.
 
 ## Configuration is done in the UI
 
