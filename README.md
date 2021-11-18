@@ -1,6 +1,6 @@
-# HomeAssistant Carrier Infinity
+# TP-Link Kasa Clound Integration
 
-HomeAssistant plugin for Carrier Infinity / Bryant Evolution / ICP Brands Ion thermostats.
+Integration to communicate and change the state of Kasa Cloud Devices. Mostly intended for use with Outlet Plugs as we are using assumed state in conjunction with periodic Cloud Polling. Explicitly not intended to poll Kasa's Cloud for LightSwitch changes. 
 
 [![GitHub Release][releases-shield]][releases]
 [![GitHub Activity][commits-shield]][commits]
@@ -8,42 +8,42 @@ HomeAssistant plugin for Carrier Infinity / Bryant Evolution / ICP Brands Ion th
 
 [![hacs][hacsbadge]][hacs]
 
+[![Discord][discord-shield]][discord]
+[![Community Forum][forum-shield]][forum]
+
 _Component to integrate with [integration_api][Tp-Link Kasa]._
 
-# Supported Systems
+**This component will set up the following platforms.**
 
-This is a standalone plugin for Homebridge that talks directly to the Infinity/Evolution/Ion api. It should support these similar systems:
-* [Carrier Infinity](https://www.myinfinitytouch.carrier.com/Account/Register)</a>
-* [Bryant Evolution](https://www.myevolutionconnex.bryant.com/Account/Register)</a>
-* [ICP Brands Ion](https://www.ioncomfort.com/Account/Register) (including Airquest, Arcoaire, Comfortmaker, Day&Night, Heil, Keeprite, Tempstar)
+Platform | Description
+-- | --
+`switch` | Switch For Plugs `True` or `False`.
+
+![Device1][Device1img]
 
 ## Installation
 
-1. Using the tool of choice open the directory (folder) for your HA configuration (where you find `configuration.yaml`).
-2. If you do not have a `custom_components` directory (folder) there, you need to create it.
-3. In the `custom_components` directory (folder) create a new folder called `TpLink_Cloud`.
-4. Download _all_ the files from the `custom_components/TpLink_Cloud/` directory (folder) in this repository.
-5. Place the files you downloaded in the new directory (folder) you created.
-6. Restart Home Assistant
-7. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Tp-Link"
+	@@ -33,16 +29,10 @@ Platform | Description
 
 Using your HA configuration directory (folder) as a starting point you should now also have this:
 
-# Notes
-
-* It may take 1-2 minutes from the time you make a change via HomeKit until your thermostat sees the change. This is an unavoidable result of how the thermostats poll for updates.
-* This plugin *does not* require Infinitude/Infinitive.
+```text
+custom_components/integration_blueprint/translations/en.json
+custom_components/integration_blueprint/__init__.py
+custom_components/integration_blueprint/tplinkcloud.py
+custom_components/integration_blueprint/binary_sensor.py
+custom_components/integration_blueprint/config_flow.py
+custom_components/integration_blueprint/const.py
+custom_components/integration_blueprint/manifest.json
+custom_components/integration_blueprint/switch.py
+```
 
 ## Configuration is done in the UI
 
 <!---->
-
 ## Contributions are welcome!
-
 If you want to contribute to this please read the [Contribution guidelines](CONTRIBUTING.md)
-
 ***
-
 [integration_blueprint]: https://github.com/njobrien1006/tplink_cloud
 [integration_api]: https://www.kasasmart.com
 [commits-shield]: https://img.shields.io/github/commit-activity/y/custom-components/blueprint.svg?style=for-the-badge
