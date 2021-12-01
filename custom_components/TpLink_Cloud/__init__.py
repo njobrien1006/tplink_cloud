@@ -31,8 +31,6 @@ from homeassistant.const import (
     STATE_UNKNOWN,
 )
 
-SCAN_INTERVAL = timedelta(seconds=300)
-
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
@@ -52,17 +50,18 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
 
     session = async_get_clientsession(hass)
     client = IntegrationBlueprintApiClient(username, password, session, hass)
-    await client.async_get_devices()
+    Ret = await client.async_get_devices()
 
     hass.data[DOMAIN][entry.entry_id] = client
 
-    for platform in PLATFORMS:
-        if entry.options.get(platform, True):
-            hass.async_add_job(
-                hass.config_entries.async_forward_entry_setup(entry, platform)
-            )
+    if Ret != None:
+        for platform in PLATFORMS:
+            if entry.options.get(platform, True):
+                hass.async_add_job(
+                    hass.config_entries.async_forward_entry_setup(entry, platform)
+                )
 
-    await client.start()
+        await client.start()
 
     async def async_shutdown(event: Event):
         """Shut down the client."""
