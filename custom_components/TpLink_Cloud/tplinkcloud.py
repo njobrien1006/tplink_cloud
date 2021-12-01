@@ -8,7 +8,7 @@ import async_timeout
 import uuid
 import time
 
-TIMEOUT = 5
+TIMEOUT = 30
 
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
@@ -35,6 +35,7 @@ class IntegrationBlueprintApiClient:
         self.token = None
         self.url_token = None
         self.firsttime = True
+        self.timeout = TIMEOUT
 
     async def async_url_token_update(self):
         """Get Token with User, Pass, UUID4"""
@@ -64,7 +65,12 @@ class IntegrationBlueprintApiClient:
         if self.token == None:
             await self.async_url_token_update()
         response = await self.api_wrapper("post", self.url_token, data={"method": "getDeviceList"}, headers=HEADERS)
+        if response == None:
+            _LOGGER.debug(f"Async Get Devices failed with None.")
+            return None
         _LOGGER.debug(f"Async Get Devices: {response}")
+        """Set HTTP timeout to something normal."""
+        self.timeout = 5 
         if response["error_code"] == -20651:
             await self.async_url_token_update()
             response = await self.api_wrapper("post", self.url_token, data={"method": "getDeviceList"}, headers=HEADERS)
@@ -328,7 +334,7 @@ class IntegrationBlueprintApiClient:
     ) -> dict:
         """Get information from the API."""
         try:
-            async with async_timeout.timeout(TIMEOUT, loop=asyncio.get_event_loop()):
+            async with async_timeout.timeout(self.timeout, loop=asyncio.get_event_loop()):
                 if method == "get":
                     response = await self._session.get(url, headers=headers)
                     return await response.json()
