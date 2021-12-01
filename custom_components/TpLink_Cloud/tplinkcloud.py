@@ -8,7 +8,7 @@ import async_timeout
 import uuid
 import time
 
-TIMEOUT = 10
+TIMEOUT = 5
 
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
@@ -39,7 +39,7 @@ class IntegrationBlueprintApiClient:
     async def async_url_token_update(self):
         """Get Token with User, Pass, UUID4"""
         _LOGGER.debug(f"Token Update Call.")
-        _LOGGER.debug(f"Token UUID: {uuid.uuid4().hex}")
+        _LOGGER.info(f"Token UUID: {uuid.uuid4().hex}")
         response = await self.api_wrapper("post", self.url, 
             data={
                 "method": "login",
@@ -51,10 +51,13 @@ class IntegrationBlueprintApiClient:
                 }
                 }, 
             headers=HEADERS)
-        #_LOGGER.debug(f"Token Update Call Rsp: {response}")
-        self.token = response["result"]["token"]
-        self.url_token = f"{self.url}/?token={self.token}"
-        _LOGGER.debug(f"URL'd Token: {self.url_token}")
+        _LOGGER.debug(f"Token Update Call Rsp: {response}")
+        if response != None:
+            self.token = response["result"]["token"]
+            self.url_token = f"{self.url}/?token={self.token}"
+            _LOGGER.info(f"URL'd Token: {self.url_token}")
+        else:
+            _LOGGER.info(f"Token Failed Update!!")
 
     async def async_get_devices(self):
         """Get Devices from the Cloud."""
@@ -139,11 +142,16 @@ class IntegrationBlueprintApiClient:
             return stateinfo
 
     async def set_state_for_device(self, child_id, state):
+        'Use Async Loop incase multipe set request @ once.'
+        self.hass.async_create_task(self.set_state_for_device_loop(child_id, state))
+
+    async def set_state_for_device_loop(self, child_id, state):
         """Set state of switch and update our sts for assumed state if no error is returned."""
         if len(child_id) > 40:
             """Is Child"""
             deviceid = child_id[0:40]
-            response = await self.api_wrapper("post", self.url_token, 
+            if self._dev_sts[dev][child] != None:
+                response = await self.api_wrapper("post", self.url_token, 
                 data={
                     "method": "passthrough",
                     "params": {
@@ -164,13 +172,21 @@ class IntegrationBlueprintApiClient:
                     }
                     }, 
                 headers=HEADERS)
-            if response["error_code"] == 0:
-                child = int(child_id[-2:])
-                self._dev_sts[deviceid][child] = state
+                if response == None:
+                    self._dev_sts[dev][child] = None
+                else:
+                    if response["error_code"] == 0:
+                        child = int(child_id[-2:])
+                        self._dev_sts[deviceid][child] = state
+                    else:
+                        _LOGGER.debug(f"Async Set Device Something Happened Child")
+            else:
+                await self.async_get_devices()
         else:
             """Is Not Child"""
             deviceid = child_id
-            response = await self.api_wrapper("post", self.url_token, 
+            if self._dev_sts[deviceid] != None:
+                response = await self.api_wrapper("post", self.url_token,
                 data={
                     "method": "passthrough",
                     "params": {
@@ -185,9 +201,16 @@ class IntegrationBlueprintApiClient:
                     }
                     }, 
                 headers=HEADERS)
-            if response["error_code"] == 0:
-                self._dev_sts[deviceid] = state
-        _LOGGER.debug(f"Async Set Device RSP: {response}")
+                if response == None:
+                    self._dev_sts[deviceid] = None
+                else:
+                    if response["error_code"] == 0:
+                        self._dev_sts[deviceid] = state
+                    else:
+                        _LOGGER.debug(f"Async Set Device Something Happened N.Child")
+            else:
+                await self.async_get_devices()
+        _LOGGER.debug(f"Async Set Device RSP for {self.get_alias(child_id)}: {response}")
         """Call to update our newly changed state within HA"""
         if deviceid in self.dev_callbacks:
                 for callback in self.dev_callbacks[deviceid]:
@@ -227,9 +250,9 @@ class IntegrationBlueprintApiClient:
         for device in self._devices:
             deviceid = device["deviceId"]
             if self.firsttime:
-                self.hass.async_create_task(self.async_get_dev_data(deviceid))
+                await self.async_get_dev_data(deviceid)   
             else:
-                await self.async_get_dev_data(deviceid)
+                self.hass.async_create_task(self.async_get_dev_data(deviceid))
         self.firsttime = False
         _LOGGER.debug(f"Async Get Data End: {time.time()}")
 
@@ -249,31 +272,35 @@ class IntegrationBlueprintApiClient:
                     }
                     }, 
                 headers=HEADERS)
-            #_LOGGER.debug(f"Async Get Device RSP: {response}")
+            _LOGGER.debug(f"Async Get Device RSP: {response}")
             if response["error_code"] == -20571:
                 self._dev_sts[deviceid] = None
             elif response["error_code"] == -20651:
                 """Token expires on monthly basis need to catch it an regenerate it."""
                 await self.async_url_token_update()
-                _LOGGER.debug(f"Token Updated due to Expired Creds. ReRun this Sub and Return @ Completion. Hopefully no Cont Loops.")
+                _LOGGER.warning(f"Token Updated due to Expired Creds. ReRun this Sub and Return @ Completion. Hopefully no Cont Loops.")
                 await self.async_get_data()
                 return
             elif response != None:
                 self._dev_rsp[deviceid] = response
                 self._dev_sts[deviceid] = await self.get_state_for_device(deviceid)
                 self._dev_alias[deviceid] = await self.get_alias_for_device(deviceid)
-                #_LOGGER.debug(f"Async Get Device Relay Sts: {self._dev_sts[deviceid]}") 
+                _LOGGER.debug(f"Async Get Device Relay Sts: {self._dev_sts[deviceid]}") 
             else:
-                _LOGGER.debug(f"Async Get Device Failed with None Type Reponse: {response}")
+                _LOGGER.warning(f"Async Get Device Failed with None Type Reponse: {response}")
             if deviceid in self.dev_callbacks:
                 for callback in self.dev_callbacks[deviceid]:
-                    callback()
+                    if deviceid in self._dev_alias:
+                        callback()
+                    else:
+                        self._dev_alias[deviceid] = "unavail"
+                        callback()
         _LOGGER.debug(f"Async Get Data Dev End: {time.time()}")
 
     async def start(self):
         """Called after the integration is configured. Gets data and registers a future call."""
         await self.async_get_data()
-        delay = 5
+        delay = 10
         self.task = self.loop.call_later(delay, self.syncmain)
 
     def syncmain(self):
