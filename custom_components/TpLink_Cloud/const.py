@@ -20,6 +20,22 @@ CONF_PASSWORD = "password"
 # Defaults
 DEFAULT_NAME = DOMAIN
 
+# Plug Configs
+KP400 = {}
+KP400 = [
+      {
+         "alias":"Child 1",
+         "id":"00",
+         "state":0
+      },
+      {
+         "alias":"Child 2",
+         "id":"01",
+         "state":0
+      }
+   ]
+
+
 
 STARTUP_MESSAGE = f"""
 -------------------------------------------------------------------
