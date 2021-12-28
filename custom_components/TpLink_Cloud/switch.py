@@ -3,7 +3,7 @@ import logging
 
 from homeassistant.components.switch import SwitchEntity
 
-from .const import DEFAULT_NAME, DOMAIN, SWITCH
+from .const import DEFAULT_NAME, DOMAIN, SWITCH, KP400
 from .entity import TpLink_CloudEntity
 from .tplinkcloud import IntegrationBlueprintApiClient
 
@@ -14,14 +14,37 @@ async def async_setup_entry(hass, entry, async_add_devices):
     client = hass.data[DOMAIN][entry.entry_id]
     deviceslst = await client.async_rtn_devices()
     await client.async_get_data()
-    #_LOGGER.debug(f"DevicesLst: {deviceslst}")
+    _LOGGER.debug(f"DevicesLst: {deviceslst}")
     for mydevice in deviceslst:
         children = await client.get_children_for_device(mydevice["deviceId"])
-        if children == None:
+        if children == "offline":
+            devmdl = mydevice["deviceModel"]
+            if devmdl == "HS103(US)":
+                'No children and can create like a simple plug.'
+                async_add_devices([IntegrationBlueprintBinarySwitch(client, mydevice["deviceId"], mydevice["deviceId"], mydevice["alias"])])
+            elif devmdl == "KP400(US)":
+                'Has children and can create with children.'
+                _LOGGER.debug(f"Pre-Children: {children}")
+                children = KP400
+                _LOGGER.debug(f"Children: {children}")
+                for child in children:
+                    devID = mydevice["deviceId"]
+                    chiID = child["id"]
+                    child["id"] = f"{devID}{chiID}"
+                    _LOGGER.debug("Child Id on create: " + child["id"])
+                    async_add_devices([IntegrationBlueprintBinarySwitch(client, mydevice["deviceId"], child["id"], child["alias"])])
+            else:
+                'Unconfirmed plug type. Put it in as simple plug and throw a warning.'
+                mydevalias = mydevice["alias"]
+                _LOGGER.warning(f"Device =={mydevalias}== is not online and is not known...add a case above to parse its type and be able to add it when it is offline.")
+                async_add_devices([IntegrationBlueprintBinarySwitch(client, mydevice["deviceId"], mydevice["deviceId"], mydevice["alias"])])
+        elif children == None:
             async_add_devices([IntegrationBlueprintBinarySwitch(client, mydevice["deviceId"], mydevice["deviceId"], mydevice["alias"])])
         else:
             for child in children:
                 async_add_devices([IntegrationBlueprintBinarySwitch(client, mydevice["deviceId"], child["id"], child["alias"])])
+
+                
 
 class IntegrationBlueprintBinarySwitch(SwitchEntity, TpLink_CloudEntity):
     """TpLink_Cloud switch class."""
