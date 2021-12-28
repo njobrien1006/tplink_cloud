@@ -95,8 +95,8 @@ class IntegrationBlueprintApiClient:
         """Return Single State for a switch. Primary Scwitches are len(40), Children are len(42)"""
         if len(devid) > 40:
             dev = devid[0:40]
-            #if self._dev_sts[dev] == None:
-            #    return None
+            if self._dev_sts[dev] == None:
+                return None
             child = int(devid[-2:])
             return self._dev_sts[dev][child]
         else:
@@ -120,6 +120,7 @@ class IntegrationBlueprintApiClient:
             else:
                 stateinfo =  sysinfo["relay_state"]
             return stateinfo
+        return None
 
     def get_alias(self, devid):
         """Return Single Alias for a switch. Primary Scwitches are len(40), Children are len(42)"""
@@ -156,7 +157,7 @@ class IntegrationBlueprintApiClient:
         if len(child_id) > 40:
             """Is Child"""
             deviceid = child_id[0:40]
-            if self._dev_sts[dev][child] != None:
+            if self._dev_sts[deviceid] != None:
                 response = await self.api_wrapper("post", self.url_token, 
                 data={
                     "method": "passthrough",
@@ -179,7 +180,7 @@ class IntegrationBlueprintApiClient:
                     }, 
                 headers=HEADERS)
                 if response == None:
-                    self._dev_sts[dev][child] = None
+                    self._dev_sts[deviceid] = None
                 else:
                     if response["error_code"] == 0:
                         child = int(child_id[-2:])
@@ -226,6 +227,7 @@ class IntegrationBlueprintApiClient:
         """Parse the API response and return the children used to create the switches."""
         if devid in self._dev_rsp:
             result = await self.get_parse_for_device(self._dev_rsp[devid], "result")
+            _LOGGER.debug(f"Async get_children_for_device: {result}")
             rsp = await self.get_parse_for_device(result, "responseData")
             system = await self.get_parse_for_device(rsp, "system") 
             sysinfo = await self.get_parse_for_device(system, "get_sysinfo")
@@ -234,7 +236,8 @@ class IntegrationBlueprintApiClient:
                 return children
             else:
                 return None
-        return None
+        _LOGGER.debug(f"Async get_children_for_device not in RSP....offline")
+        return "offline"
 
     async def get_parse_for_device(self, input, textparse):
         """Could't figure out how to parse the thing. Gave up and did what I could figure out without losing more hair."""
@@ -299,7 +302,7 @@ class IntegrationBlueprintApiClient:
                     if deviceid in self._dev_alias:
                         callback()
                     else:
-                        self._dev_alias[deviceid] = "unavail"
+                        self._dev_alias[deviceid] = "Offline"
                         callback()
         _LOGGER.debug(f"Async Get Data Dev End: {time.time()}")
 
