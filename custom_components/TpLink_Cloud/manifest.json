@@ -4,7 +4,7 @@
   "documentation": "https://github.com/njobrien1006/tplink_cloud",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/njobrien1006/tplink_cloud/issues",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "config_flow": true,
   "codeowners": [
     "@njobrien1006"
