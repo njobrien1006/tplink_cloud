@@ -3,7 +3,7 @@
 NAME = "Tp-Link Kasa Cloud"
 DOMAIN = "TpLink_Cloud"
 DOMAIN_DATA = f"{DOMAIN}_data"
-VERSION = "0.0.1"
+VERSION = "0.0.3"
 ATTRIBUTION = "Data provided by https://use1-wap.tplinkcloud.com"
 ISSUE_URL = "https://github.com/njobrien1006/tplink_cloud/issues"
 
