@@ -3,6 +3,7 @@ from homeassistant.helpers.entity import Entity
 
 from .const import DOMAIN, NAME, VERSION, ATTRIBUTION
 
+
 class TpLink_CloudEntity(Entity):
 
     @property

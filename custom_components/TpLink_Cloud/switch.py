@@ -9,6 +9,7 @@ from .tplinkcloud import IntegrationBlueprintApiClient
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
+
 async def async_setup_entry(hass, entry, async_add_devices):
     """Setup sensor platform."""
     client = hass.data[DOMAIN][entry.entry_id]
@@ -21,7 +22,12 @@ async def async_setup_entry(hass, entry, async_add_devices):
             devmdl = mydevice["deviceModel"]
             if devmdl == "HS103(US)":
                 'No children and can create like a simple plug.'
-                async_add_devices([IntegrationBlueprintBinarySwitch(client, mydevice["deviceId"], mydevice["deviceId"], mydevice["alias"])])
+                async_add_devices([
+                    IntegrationBlueprintBinarySwitch(client,
+                                                     mydevice["deviceId"],
+                                                     mydevice["deviceId"],
+                                                     mydevice["alias"])
+                ])
             elif devmdl == "KP400(US)":
                 'Has children and can create with children.'
                 _LOGGER.debug(f"Pre-Children: {children}")
@@ -32,19 +38,38 @@ async def async_setup_entry(hass, entry, async_add_devices):
                     chiID = child["id"]
                     child["id"] = f"{devID}{chiID}"
                     _LOGGER.debug("Child Id on create: " + child["id"])
-                    async_add_devices([IntegrationBlueprintBinarySwitch(client, mydevice["deviceId"], child["id"], child["alias"])])
+                    async_add_devices([
+                        IntegrationBlueprintBinarySwitch(
+                            client, mydevice["deviceId"], child["id"],
+                            child["alias"])
+                    ])
             else:
                 'Unconfirmed plug type. Put it in as simple plug and throw a warning.'
                 mydevalias = mydevice["alias"]
-                _LOGGER.warning(f"Device =={mydevalias}== is not online and is not known...add a case above to parse its type and be able to add it when it is offline.")
-                async_add_devices([IntegrationBlueprintBinarySwitch(client, mydevice["deviceId"], mydevice["deviceId"], mydevice["alias"])])
+                _LOGGER.warning(
+                    f"Device =={mydevalias}== is not online and is not known...add a case above to parse its type and be able to add it when it is offline."
+                )
+                async_add_devices([
+                    IntegrationBlueprintBinarySwitch(client,
+                                                     mydevice["deviceId"],
+                                                     mydevice["deviceId"],
+                                                     mydevice["alias"])
+                ])
         elif children == None:
-            async_add_devices([IntegrationBlueprintBinarySwitch(client, mydevice["deviceId"], mydevice["deviceId"], mydevice["alias"])])
+            async_add_devices([
+                IntegrationBlueprintBinarySwitch(client, mydevice["deviceId"],
+                                                 mydevice["deviceId"],
+                                                 mydevice["alias"])
+            ])
         else:
             for child in children:
-                async_add_devices([IntegrationBlueprintBinarySwitch(client, mydevice["deviceId"], child["id"], child["alias"])])
+                async_add_devices([
+                    IntegrationBlueprintBinarySwitch(client,
+                                                     mydevice["deviceId"],
+                                                     child["id"],
+                                                     child["alias"])
+                ])
 
-                
 
 class IntegrationBlueprintBinarySwitch(SwitchEntity, TpLink_CloudEntity):
     """TpLink_Cloud switch class."""
@@ -63,7 +88,7 @@ class IntegrationBlueprintBinarySwitch(SwitchEntity, TpLink_CloudEntity):
     def dev_update(self):
         self.dev_state = self.client.get_state_sts(self.child_id)
         self.dev_alias = self.client.get_alias(self.child_id)
-        
+
         # Tell HA we have an update
         self.schedule_update_ha_state()
 
