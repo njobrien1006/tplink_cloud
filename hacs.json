@@ -1,8 +1,6 @@
 {
     "name": "Tp-Link Kasa Cloud",
     "hacs": "1.6.0",
-    "domains": [
-        "switch"
-    ],
-    "homeassistant": "0.118.0"
+    "render_readme": true,
+    "homeassistant": "2022.11.0"
 }
