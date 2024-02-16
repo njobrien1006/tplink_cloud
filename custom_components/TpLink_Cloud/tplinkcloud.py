@@ -232,8 +232,8 @@ class IntegrationBlueprintApiClient:
                             "Async Set Device Something Happened N.Child")
             else:
                 await self.async_get_devices()
-        _LOGGER.debug(
-            "Async Set Device RSP for %s:%s", self.get_alias(child_id), response)
+        _LOGGER.debug("Async Set Device RSP for %s:%s",
+                      self.get_alias(child_id), response)
         """Call to update our newly changed state within HA"""  # pylint: disable=W0105
         if deviceid in self.dev_callbacks:
             for callback in self.dev_callbacks[deviceid]:
@@ -303,7 +303,7 @@ class IntegrationBlueprintApiClient:
             if response["error_code"] == -20571:
                 self._dev_sts[deviceid] = None
             elif response["error_code"] == -20651:
-                """Token expires on monthly basis need to catch it an regenerate it.""" # pylint: disable=W0105
+                """Token expires on monthly basis need to catch it an regenerate it."""  # pylint: disable=W0105
                 await self.async_url_token_update()
                 _LOGGER.warning(
                     "Token Updated due to Expired Creds. ReRun this Sub and Return @ Completion. Hopefully no Cont Loops."
@@ -316,12 +316,12 @@ class IntegrationBlueprintApiClient:
                     deviceid)
                 self._dev_alias[deviceid] = await self.get_alias_for_device(
                     deviceid)
-                _LOGGER.debug(
-                    "Async Get Device Relay Sts: %s", self._dev_sts[deviceid])
+                _LOGGER.debug("Async Get Device Relay Sts: %s",
+                              self._dev_sts[deviceid])
             else:
                 _LOGGER.warning(
-                    "Async Get Device Failed with None Type Reponse: %s", response
-                )
+                    "Async Get Device Failed with None Type Reponse: %s",
+                    response)
             if deviceid in self.dev_callbacks:
                 for callback in self.dev_callbacks[deviceid]:
                     if deviceid in self._dev_alias:

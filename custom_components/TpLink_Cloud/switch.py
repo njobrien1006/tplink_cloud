@@ -21,7 +21,7 @@ async def async_setup_entry(hass, entry, async_add_devices):
         if children == "offline":
             devmdl = mydevice["deviceModel"]
             if devmdl == "HS103(US)":
-                """No children and can create like a simple plug.""" # pylint: disable=W0105
+                """No children and can create like a simple plug."""  # pylint: disable=W0105
                 async_add_devices([
                     IntegrationBlueprintBinarySwitch(client,
                                                      mydevice["deviceId"],
@@ -29,7 +29,7 @@ async def async_setup_entry(hass, entry, async_add_devices):
                                                      mydevice["alias"])
                 ])
             elif devmdl == "KP400(US)":
-                """Has children and can create with children.""" # pylint: disable=W0105
+                """Has children and can create with children."""  # pylint: disable=W0105
                 _LOGGER.debug("Pre-Children: %s", children)
                 children = KP400
                 _LOGGER.debug("Children: %s", children)
@@ -44,15 +44,14 @@ async def async_setup_entry(hass, entry, async_add_devices):
                             child["alias"])
                     ])
             else:
-                """Unconfirmed plug type. Put it in as simple plug and throw a warning.""" # pylint: disable=W0105
+                """Unconfirmed plug type. Put it in as simple plug and throw a warning."""  # pylint: disable=W0105
                 mydevalias = mydevice["alias"]
                 _LOGGER.warning(
                     "Device ==%s== \
                         is not online and is not known...\
                             add a case above to parse its \
                                 type and be able to add it \
-                                    when it is offline.", mydevalias
-                )
+                                    when it is offline.", mydevalias)
                 async_add_devices([
                     IntegrationBlueprintBinarySwitch(client,
                                                      mydevice["deviceId"],
