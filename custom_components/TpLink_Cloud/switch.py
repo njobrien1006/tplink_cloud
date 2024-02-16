@@ -15,13 +15,13 @@ async def async_setup_entry(hass, entry, async_add_devices):
     client = hass.data[DOMAIN][entry.entry_id]
     deviceslst = await client.async_rtn_devices()
     await client.async_get_data()
-    _LOGGER.debug(f"DevicesLst: {deviceslst}")
+    _LOGGER.debug("DevicesLst: %s", deviceslst)
     for mydevice in deviceslst:
         children = await client.get_children_for_device(mydevice["deviceId"])
         if children == "offline":
             devmdl = mydevice["deviceModel"]
             if devmdl == "HS103(US)":
-                'No children and can create like a simple plug.'
+                """No children and can create like a simple plug.""" # pylint: disable=W0105
                 async_add_devices([
                     IntegrationBlueprintBinarySwitch(client,
                                                      mydevice["deviceId"],
@@ -29,25 +29,29 @@ async def async_setup_entry(hass, entry, async_add_devices):
                                                      mydevice["alias"])
                 ])
             elif devmdl == "KP400(US)":
-                'Has children and can create with children.'
-                _LOGGER.debug(f"Pre-Children: {children}")
+                """Has children and can create with children.""" # pylint: disable=W0105
+                _LOGGER.debug("Pre-Children: %s", children)
                 children = KP400
-                _LOGGER.debug(f"Children: {children}")
+                _LOGGER.debug("Children: %s", children)
                 for child in children:
                     devID = mydevice["deviceId"]
                     chiID = child["id"]
                     child["id"] = f"{devID}{chiID}"
-                    _LOGGER.debug("Child Id on create: " + child["id"])
+                    _LOGGER.debug("Child Id on create: %s", child["id"])
                     async_add_devices([
                         IntegrationBlueprintBinarySwitch(
                             client, mydevice["deviceId"], child["id"],
                             child["alias"])
                     ])
             else:
-                'Unconfirmed plug type. Put it in as simple plug and throw a warning.'
+                """Unconfirmed plug type. Put it in as simple plug and throw a warning.""" # pylint: disable=W0105
                 mydevalias = mydevice["alias"]
                 _LOGGER.warning(
-                    f"Device =={mydevalias}== is not online and is not known...add a case above to parse its type and be able to add it when it is offline."
+                    "Device ==%s== \
+                        is not online and is not known...\
+                            add a case above to parse its \
+                                type and be able to add it \
+                                    when it is offline.", mydevalias
                 )
                 async_add_devices([
                     IntegrationBlueprintBinarySwitch(client,
@@ -55,7 +59,7 @@ async def async_setup_entry(hass, entry, async_add_devices):
                                                      mydevice["deviceId"],
                                                      mydevice["alias"])
                 ])
-        elif children == None:
+        elif children is None:
             async_add_devices([
                 IntegrationBlueprintBinarySwitch(client, mydevice["deviceId"],
                                                  mydevice["deviceId"],
@@ -75,6 +79,7 @@ class IntegrationBlueprintBinarySwitch(SwitchEntity, TpLink_CloudEntity):
     """TpLink_Cloud switch class."""
 
     def __init__(self, client, deviceId, child_id, alias):
+        """Init B.Switch"""
         self.client = client
         self.device = deviceId
         self.child_id = child_id
@@ -86,6 +91,7 @@ class IntegrationBlueprintBinarySwitch(SwitchEntity, TpLink_CloudEntity):
         self.client.set_callback_for_dev(self.device, self.dev_update)
 
     def dev_update(self):
+        """Init dev Updt"""
         self.dev_state = self.client.get_state_sts(self.child_id)
         self.dev_alias = self.client.get_alias(self.child_id)
 
@@ -104,7 +110,7 @@ class IntegrationBlueprintBinarySwitch(SwitchEntity, TpLink_CloudEntity):
     @property
     def available(self):
         """Reports available."""
-        if self.dev_state == None:
+        if self.dev_state is None:
             return False
         else:
             return True
@@ -115,14 +121,16 @@ class IntegrationBlueprintBinarySwitch(SwitchEntity, TpLink_CloudEntity):
 
     @property
     def name(self):
-        if self.dev_alias == None:
+        """Dev Name"""
+        if self.dev_alias is None:
             return
         return self.dev_alias
 
     @property
     def friendly_name(self):
-        if self.dev_alias == None:
-            return
+        """Friendly Name"""
+        if self.dev_alias is None:
+            return False
         return self.dev_alias
 
     @property
@@ -132,6 +140,7 @@ class IntegrationBlueprintBinarySwitch(SwitchEntity, TpLink_CloudEntity):
 
     @property
     def is_on(self):
-        if self.dev_state == None:
+        """State Value"""
+        if self.dev_state is None:
             return 0
         return self.dev_state

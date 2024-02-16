@@ -54,7 +54,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
 
     hass.data[DOMAIN][entry.entry_id] = client
 
-    if Ret != None:
+    if Ret is not None:
         for platform in PLATFORMS:
             if entry.options.get(platform, True):
                 hass.async_add_job(

@@ -5,6 +5,7 @@ from .const import DOMAIN, NAME, VERSION, ATTRIBUTION
 
 
 class TpLink_CloudEntity(Entity):
+    """Cloud Entity"""
 
     @property
     def unique_id(self):
@@ -13,6 +14,7 @@ class TpLink_CloudEntity(Entity):
 
     @property
     def device_info(self):
+        """DevInfo"""
         mydevice = self.client.sync_rtn_device(self.device)
         return {
             "identifiers": {(DOMAIN, self.device)},
